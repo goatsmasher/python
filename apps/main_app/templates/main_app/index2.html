@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Login and Registration Form </title>
+        {% load staticfiles %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <!--<link rel="stylesheet" type="text/css" href="css/test.css" />-->
+        <link href="{% static 'main_app/test.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'main_app/animate-custom.css' %}">
+		<!--<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />-->
+    </head>
+    <body>
+        <div class="container">
+            <section>				
+                <div id="container_demo" >
+                    <a class="hiddenanchor" id="toregister"></a>
+                    <a class="hiddenanchor" id="tologin"></a>
+                    <div id="wrapper">
+                        <div id="login" class="animate form">
+                            <form  action="/login" method="POST"> 
+                                <h5>Coding Dojo - Django</h5>
+                                <h1>Log in</h1> 
+                                <p> 
+                                     {% csrf_token %}
+                                    <label for="username" class="uname" data-icon="u" > Your email </label>
+                                    <input id="username" name="email" required="required" type="text" placeholder="mymail@mail.com"/>
+                                </p>
+                                <p> 
+                                    <label for="password" class="youpasswd" data-icon="p"> Your password </label>
+                                    <input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO" /> 
+                                </p>
+                                <!--<p class="keeplogin"> 
+									<input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> 
+									<label for="loginkeeping">Keep me logged in</label>
+								</p>-->
+                                <p class="login button"> 
+                                    <input type="submit" value="Login" /> 
+								</p>
+                                <p class="change_link">
+									Not registered yet ?
+									<a href="#toregister" class="to_register">Sign up</a>
+								</p>
+                            </form>
+                        </div>
+
+                        <div id="register" class="animate form">
+                            <form  action="/register" method="POST">
+                                <h5>Coding Dojo - Django</h5>
+                                <h1> Sign up </h1> 
+                                <p> 
+                                     {% csrf_token %}
+                                    <label for="firstnamesignup" class="youname" data-icon="u" > Your first name</label>
+                                    <input id="firstnamesignup" name="first_name" required="required" type="text" placeholder="Billy Bob"/> 
+                                </p>
+                                <p> 
+                                    <label for="lastnamesignup" class="youmail" data-icon="u" > Your last name</label>
+                                    <input id="lastnamesignup" name="last_name" required="required" type="text" placeholder="Thorton"/> 
+                                </p>
+                                <p> 
+                                    <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
+                                    <input id="emailsignup" name="email" required="required" type="email" placeholder="redneckrodeo@mail.com"/> 
+                                </p>
+                                <p> 
+                                    <label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
+                                    <input id="passwordsignup" name="password" required="required" type="password" placeholder="eg. X8df!90EO"/>
+                                </p>
+                                <p> 
+                                    <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your password </label>
+                                    <input id="passwordsignup_confirm" name="confirm_password" required="required" type="password" placeholder="eg. X8df!90EO"/>
+                                </p>
+                                <p class="signin button"> 
+									<input type="submit" value="Sign up"/> 
+								</p>
+                                <p class="change_link">  
+									Already registered ?
+									<a href="#tologin" class="to_register"> Go and log in </a>
+								</p>
+                            </form>
+                        </div>
+                        <div id="errors" class="animate form">
+                                <h5>Coding Dojo - Django</h5>
+                                <h1> Uh-oh! </h1> 
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <p>{{ message }}</p>    
+                                    {% endfor %}
+                                {% endif %}
+                                <p class="change_link">  
+									Try Agian
+									<a href="#tologin" class="to_register"> Go log in </a></p>
+                                <p class="change_link"> 
+                                    <a href="#toregister" class="to_register"> Go register </a>
+								</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>  
+            </section>
+        </div>
+    </body>
+</html>

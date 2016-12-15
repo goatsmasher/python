@@ -1,0 +1,38 @@
+#container, #registerform, #loginform {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+#container {
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #F1E599;
+    width: 250px;
+}
+#registerform {
+    width: 160px;
+}
+#loginform {
+    width: 160px;
+    margin-bottom: 20px;
+}
+.submit {
+    margin: 10px 0 0 auto;
+    display: block;
+    border-radius: 10px;
+    color: white;
+    background-color: #597EAA;
+}
+.submit:hover{
+    box-shadow: 2px;
+}
+input {
+    margin: 3px;
+}
+hr {
+    text-decoration: none;
+    width: 70%;
+}
+h1 {
+    margin-bottom: 0;
+}
