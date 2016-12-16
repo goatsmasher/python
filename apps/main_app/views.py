@@ -15,22 +15,29 @@ def register(request):
             return redirect('/')
     request.session['response'] = {
         'activity' : "Registered",
-        'first_name' : request.POST['first_name'],
+        'username' : request.POST['username'],
     }
+    user_id = Register.objects.get(name=request.POST['name'])
+    request.session['id'] = user_id.id
     return redirect('/success')
 
 def login(request):
-    response = Register.objects.login(request)
-    if response[0] == False:
-        messages.error(request, response[1])
+    try:
+        response = Register.objects.login(request)
+        if response[0] == False:
+            messages.error(request, response[1])
+            return redirect('/')
+    except:
         return redirect('/')
     return log_in(request, response[1])
 
 def log_in(request, response):
     request.session['response'] = {
         'activity' : "Logged In",
-        'first_name' : response.first_name,
+        'username' : response.username,
     }
+    request.session['id'] = response.id
+    print request.session['id']
     return redirect('/success')
 
 def logout(request):

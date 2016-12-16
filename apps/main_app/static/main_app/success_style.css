@@ -7,17 +7,25 @@
     margin-right: auto;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: #F1E599;
+    background-color: #DBDCDB;
     width: 250px;
+}
+.submit {
+    margin: 10px 0 0 auto;
+    display: block;
+    border-radius: 10px;
+    color: white;
+    background-color: #597EAA;
 }
 h4 {
     color: green;
 }
 button {
     color: white;
-    background-color: black;
+    background-color: #597EAA;
     margin-bottom: 10px;
+    border-radius: 10px;
 }
 button:hover{
-    color: darkmagenta;
+    color: #E1E1E1;
 }

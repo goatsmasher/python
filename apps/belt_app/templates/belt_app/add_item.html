@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Create Item</title>
+        {% load staticfiles %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="{% static 'belt_app/add_item_style.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <div id="container">
+            <div id="nav">
+                <a href="{% url 'belt:index' %}">Home</a>
+                <a href="{% url 'main:logout' %}">Logout</a>
+            </div>
+            <div id="body">
+                <h1>Create a New Wish List Item</h1>
+                <form action="{% url 'belt:create' %}" method="POST">
+                    {% csrf_token %}
+                    <span>Item/Product</span><input type="text" pattern=".{3,}" title="Item name must be at least 3 characters" name="item" value="" required>
+                    <input type="submit" value="Add" id="addButton">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

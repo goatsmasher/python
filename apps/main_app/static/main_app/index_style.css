@@ -4,9 +4,9 @@
     margin-right: auto;
 }
 #container {
-    border: 1px solid black;
+    border: 3px solid black;
     border-radius: 10px;
-    background-color: #F1E599;
+    background-color: #DBDCDB;
     width: 250px;
 }
 #registerform {
@@ -16,6 +16,11 @@
     width: 160px;
     margin-bottom: 20px;
 }
+#errors {
+    text-align: center;
+    color: red;
+    font-size: 20px;
+}
 .submit {
     margin: 10px 0 0 auto;
     display: block;
@@ -24,7 +29,7 @@
     background-color: #597EAA;
 }
 .submit:hover{
-    box-shadow: 2px;
+    box-shadow: 3px;
 }
 input {
     margin: 3px;
@@ -35,4 +40,10 @@ hr {
 }
 h1 {
     margin-bottom: 0;
+    /*color: #86AFDB;*/
+}
+h5 {
+    color: dimgray;
+    margin: 0;
+    font-size: 8px;
 }

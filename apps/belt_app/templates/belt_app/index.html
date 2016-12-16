@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>My Wish List</title>
+        <meta charset="UTF-8">
+        {% load staticfiles %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="{% static 'belt_app/index_style.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <h1>Hello, {{ request.session.response.username }}</h1>
+                <a href="{% url 'main:logout' %}">Logout</a>
+            </div>
+            <div class="list">
+                
+                <table>
+                <h3>Your Wish List:</h3>    
+                        <td>Item</td>
+                        <td>Added by</td>
+                        <td>Date Added</td>
+                        <td>Action</td>
+                        {% for item in wishlist %}
+                    <tr>
+                        <td><a href="{% url 'belt:show' id=item.id %}">{{ item.item }}</td>
+                        <td></td>
+                        <td>{{item.created_at}}</td>
+                        <td><a href="{% url 'belt:del_wish' id=item.id %}">Remove from wishlist</a>
+                        <a href="{% url 'belt:destroy' id=item.id %}">Delete</a></td>
+                    </tr>
+                        {% endfor %}
+                </table>
+            </div>
+            <div class="list">
+                
+                <table>
+                <h3>Other Users' Wish List:</h3>    
+                        <td>Item</td>
+                        <td>Added by</td>
+                        <td>Date Added</td>
+                        <td>Action</td>
+                        {% for other in wishes %}
+                    <tr>
+                        <td><a href="{% url 'belt:show' id=other.id %}">{{other.item}}</td>
+                        <td>{{other.user.username}}</td>
+                        <td>{{other.created_at}}</td>
+                        <td><a href="{% url 'belt:add_wish' id=other.id %}">Add to my wishlist</a></td>
+                    </tr>
+                        {% endfor %}
+                </table>
+            </div>
+            <a href="{% url 'belt:create' %}">Add Item</a>
+        </div>
+    </body>
+</html>
