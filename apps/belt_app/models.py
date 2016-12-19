@@ -6,8 +6,7 @@ from django.db import models
 
 class WishlistManager(models.Manager):
     def add_item(self, postData, id):
-        errors =[]
-        self.create(item = postData['item'])
+        self.create(item = postData['item'], created_by = Register.objects.get(id=id))
         person = Register.objects.get(id=id)
         wishlist = self.get(item = postData['item'])
         wishlist.user.add(person)
@@ -16,14 +15,12 @@ class WishlistManager(models.Manager):
         person = Register.objects.get(id=id)
         wishlist = self.get(id = wish_id)
         wishlist.user.add(person)
+        # wishlist.created_by.add(person)
 
-    # def del_wish(self, wish_id, user_id):
-    #     user = Register.objects.filter(id=user_id)
-    #     wish = self.get(id=wish_id)
-    #     temp1 = Wishlist.objects.filter(user=user)
-    #     temp2 = Register.objects.get(wishes=wish)
-    #     temp1.delete()
-    #     temp2.delete()
+    def del_wish(self, wish_id, id):
+        person = Register.objects.get(id=id)
+        wishlist = self.get(id = wish_id)
+        wishlist.user.remove(person)
     
 
         
@@ -32,5 +29,6 @@ class Wishlist(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True) 
     user = models.ManyToManyField(Register, related_name = "wishes")
+    created_by = models.ForeignKey(Register, related_name = "created_for")
 
     objects = WishlistManager()

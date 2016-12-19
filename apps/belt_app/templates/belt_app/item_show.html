@@ -14,9 +14,9 @@
             </div>
                 <h1>{{item.item}}</h1>
                 <h4>Users who added this product/item under their wish list</h4>
-                <p>{{item.user.name}}</p>
-                <p>Name</p>
-                <p>Name</p>
+                {% for user in item.user.all %}
+                <p>{{user.username}}</p>
+                {% endfor %}
         </div>
     </body>
 </html>

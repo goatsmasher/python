@@ -12,6 +12,7 @@ def index(request):
         "wishes" : Wishlist.objects.all().exclude(user=request.session['id']),
         "username" : Register.objects.all(),
         "wishlist" : Wishlist.objects.filter(user=request.session['id']).filter(user__id=request.session['id']),
+        "created_by" : Wishlist.objects.all(),
     }
     return render(request, 'belt_app/index.html', context)
 
@@ -38,8 +39,8 @@ def del_wish(request, id):
 
 def show(request, id):
     show_item = Wishlist.objects.get(id=id)
-    user = Wishlist.objects.filter
     context = {
         "item" : show_item,
+        "users" : Register.objects.all(),
     }
     return render(request, 'belt_app/item_show.html', context)
