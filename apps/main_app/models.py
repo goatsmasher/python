@@ -8,12 +8,10 @@ NAME_REGEX = re.compile(r'^[a-zA-Z]+$')
 class RegisterManager(models.Manager):
     def register(self, postData):
         errors = []
-        if self.filter(username=postData['username']):
-            errors.append('Username already in use')
+        if self.filter(email=postData['email']):
+            errors.append('Email already in use')
         if len(postData['name']) < 3:
             errors.append('Name must be longer than three letters')
-        if len(postData['username']) < 3:
-            errors.append('Username must be longer than two letters')
         if not NAME_REGEX.match(postData['name']):
             errors.append('Your Name must contain only letters')
         if postData['password'] != postData['confirm_password']:
@@ -28,28 +26,27 @@ class RegisterManager(models.Manager):
             response['errors'] = errors
         else:
             response['status'] = True
-            self.create(name = postData['name'], username = postData['username'], password = pw_hash, datehired = postData['datehired'])
-            # request.session['id'] = Register.objects.get(username=postData['username'])
+            self.create(name = postData['name'], email = postData['email'], password = pw_hash, birthday = postData['birthday'])
         return response
 
 
     def login(self, request):
-        user = self.filter(username=request.POST['username'])
+        user = self.filter(email=request.POST['email'])
         if not user:
-            return (False, "Username/Password doesn't match.")
+            return (False, "Email/Password doesn't match.")
         else:
             password = request.POST['password'].encode()
             if self.filter(password = bcrypt.hashpw(password, user[0].password.encode())):
-                user = self.get(username=request.POST['username'])
+                user = self.get(email=request.POST['email'])
                 return (True, user)
             else:
-                return (False, "Username/Password doesn't match.")
+                return (False, "Email/Password doesn't match.")
 
 class Register(models.Model):
     name = models.CharField(max_length=30)
-    username = models.CharField(max_length=30)
+    email = models.EmailField(max_length=30)
     password = models.CharField(max_length=200)
-    datehired = models.DateTimeField()
+    birthday = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
 

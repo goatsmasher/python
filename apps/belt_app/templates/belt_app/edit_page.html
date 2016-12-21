@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Update Appointment</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link href="css/style.css" rel="stylesheet">-->
+    </head>
+    <body>
+        <a href="{% url 'main:logout' %}">Logout</a> | <a href="{% url 'belt:index' %}">Home</a>
+        <form action="{% url 'belt:edit' id=editing.id %}" method="POST">
+        {% csrf_token %}
+    Task: <input type="text" name="task" value="{{editing.task}}">
+    Status: <select name="status">
+        <option value="Pending">Pending</option>
+        <option value="Done">Done</option>
+        <option value="Missed">Missed</option>
+        </select>
+    Date: <input type="text" name="date" placeholder="{{date}}" value="{{date}}" required> <!--i could not figure this out...-->
+    Time: <input type="text" name="time" value="{{editing.time}}" required>
+    <input type="submit" name="" value="Update">
+        </form>
+        <!--i could not figure out how to populate these as the correct input types-->
+
+    </body>
+</html>

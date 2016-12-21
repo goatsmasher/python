@@ -1,46 +1,48 @@
 from django.shortcuts import render, redirect
-from .models import Wishlist
+from django.contrib import messages
+from .models import Appointment
 from ..main_app.models import Register
+from django.contrib import messages
+import datetime
+from datetime import date
 # Create your views here.
 
 def index(request):
-    try:
-        request.session['response']
-    except:
-        return redirect('/')
     context = {
-        "wishes" : Wishlist.objects.all().exclude(user=request.session['id']),
-        "username" : Register.objects.all(),
-        "wishlist" : Wishlist.objects.filter(user=request.session['id']).filter(user__id=request.session['id']),
-        "created_by" : Wishlist.objects.all(),
+        "today" : date.today(),
+        "todays_appt" : Appointment.objects.filter(date=date.today()).filter(user=request.session['id']).order_by('time'),
+        "upcoming" : Appointment.objects.all().exclude(date=date.today()).filter(user=request.session['id']).order_by('time').order_by('date'),
     }
     return render(request, 'belt_app/index.html', context)
 
-def create(request):
-    if request.method == "POST":
-        Wishlist.objects.add_item(request.POST, request.session['id'])
+def add_appt(request):
+    response = Appointment.objects.add_appt(request.POST, request.session['id']),
+    print response
+    if response[0] == False:
+        context = {
+            "message" : "Appointment Creation Failed"
+        }
+        messages.error(request, response[1])
         return redirect('belt:index')
-    return render(request, 'belt_app/add_item.html')
+    return redirect('belt:index')
+    
+
+def edit(request, id):
+    if request.method == "POST":
+        Appointment.objects.edit_appt(request.POST, id)
+        return redirect('belt:index')
+
+def edit_page(request, id):
+    show_item = Appointment.objects.get(id=id)
+    show_date = show_item.date.strftime('%m-%d-%Y')
+    context = {
+        "editing" : show_item,
+        "date" : show_date
+    }
+    print show_date
+    return render(request, 'belt_app/edit_page.html', context)
 
 def destroy(request, id):
-    item_to_delete = Wishlist.objects.get(id=id)
+    item_to_delete = Appointment.objects.get(id=id)
     item_to_delete.delete()
     return redirect('belt:index')
-
-def add_wish(request, id):
-    add_wish = Wishlist.objects.get(id=id)
-    Wishlist.objects.add_wish(add_wish.id, request.session['id'])
-    return redirect('belt:index')
-
-def del_wish(request, id):
-    Wishlist.objects.del_wish(id, request.session['id'])
-
-    return redirect('belt:index')
-
-def show(request, id):
-    show_item = Wishlist.objects.get(id=id)
-    context = {
-        "item" : show_item,
-        "users" : Register.objects.all(),
-    }
-    return render(request, 'belt_app/item_show.html', context)

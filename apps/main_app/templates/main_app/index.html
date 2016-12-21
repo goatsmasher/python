@@ -15,11 +15,12 @@
                 <form action="/register" method="POST">
                     {% csrf_token %}
                     <input type="text" name="name" placeholder="Name" required><br>
-                    <input type="text" name="username" placeholder="Username"required><br>
+                    <input type="text" name="email" placeholder="Email"required><br>
                     <input type="password" name="password" placeholder="Enter a Password"required><br>
                     <h5>*8 character minimum*</h5>
                     <input type="password" name="confirm_password" placeholder="Re-enter Your Password"required><br>
-                    <input type="date" name="datehired" required>
+                    <h4>Date of Birth</h4>
+                    <input type="date" name="birthday" required>
                     <input type="submit" class="submit" value="Register">
                 </form>
             </div>
@@ -28,7 +29,7 @@
             <div id="loginform">
                 <form action="/login" method="POST">
                     {% csrf_token %}
-                    <input type="text" name="username" placeholder="Username" required><br>
+                    <input type="text" name="email" placeholder="Email" required><br>
                     <input type="password" name="password" placeholder="Password" required><br>
                     <input type="submit" class="submit" value="Login">
                 </form>

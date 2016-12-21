@@ -1,34 +1,51 @@
 from __future__ import unicode_literals
 from ..main_app.models import Register
 from django.db import models
+import datetime
 
 # Create your models here.
 
-class WishlistManager(models.Manager):
-    def add_item(self, postData, id):
-        self.create(item = postData['item'], created_by = Register.objects.get(id=id))
-        person = Register.objects.get(id=id)
-        wishlist = self.get(item = postData['item'])
-        wishlist.user.add(person)
 
-    def add_wish(self, wish_id, id):
-        person = Register.objects.get(id=id)
-        wishlist = self.get(id = wish_id)
-        wishlist.user.add(person)
-        # wishlist.created_by.add(person)
+class AppointmentManager(models.Manager):
+    def add_appt(self, postData, id):
+        errors = []
+        if self.filter(task=postData['task']):
+            errors.append('Task already exists!')
+        if self.filter(time=postData['time']).filter(date=postData['date']):
+            errors.append('A task already exists for this time!')
+            
+        response = {}
+        if errors:
+            response['status'] = False
+            response['errors'] = errors
+        else:
+            response['status'] = True
+            self.create(task = postData['task'], status = "Pending", user = Register.objects.get(id=id), date = postData['date'], time = postData['time'])
+        return response
 
-    def del_wish(self, wish_id, id):
-        person = Register.objects.get(id=id)
-        wishlist = self.get(id = wish_id)
-        wishlist.user.remove(person)
-    
+    def edit_appt(self, postData, id):
+        appointment = self.get(id=id)
+        errors = []
+        if self.filter(task=postData['task']):
+            errors.append('Task already assigned')
+        if postData['task']:
+            appointment.task = postData['task']
+        if postData['status']:
+            appointment.status = postData['status']
+        if postData['date']:
+            appointment.date = postData['date']
+        if postData['time']:
+            appointment.time = postData['time']
+        appointment.save()
 
-        
-class Wishlist(models.Model):
-    item = models.CharField(max_length=100)
+
+class Appointment(models.Model):
+    task = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
+    date = models.DateField()
+    time = models.TimeField()
+    user = models.ForeignKey(Register, related_name = "user_appt")
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
-    user = models.ManyToManyField(Register, related_name = "wishes")
-    created_by = models.ForeignKey(Register, related_name = "created_for")
+    updated_at = models.DateTimeField(auto_now=True)
 
-    objects = WishlistManager()
+    objects = AppointmentManager()

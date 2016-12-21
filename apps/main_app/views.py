@@ -15,7 +15,7 @@ def register(request):
             return redirect('/')
     request.session['response'] = {
         'activity' : "Registered",
-        'username' : request.POST['username'],
+        'name' : request.POST['name'],
     }
     user_id = Register.objects.get(name=request.POST['name'])
     request.session['id'] = user_id.id
@@ -34,7 +34,7 @@ def login(request):
 def log_in(request, response):
     request.session['response'] = {
         'activity' : "Logged In",
-        'username' : response.username,
+        'name' : response.name,
     }
     request.session['id'] = response.id
     print request.session['id']
